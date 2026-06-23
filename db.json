@@ -1,0 +1,243 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "login": "teacher",
+      "password": "teacher123",
+      "fullName": "Смирнов Алексей Владимирович",
+      "role": "teacher",
+      "email": "teacher@example.com",
+      "group": null
+    },
+    {
+      "id": 2,
+      "login": "student1",
+      "password": "student123",
+      "fullName": "Васильев Тимофей Александрович",
+      "role": "student",
+      "email": "student1@example.com",
+      "group": "ИС-21"
+    },
+    {
+      "id": 3,
+      "login": "student2",
+      "password": "student123",
+      "fullName": "Петрова Анна Сергеевна",
+      "role": "student",
+      "email": "student2@example.com",
+      "group": "ИС-22"
+    },
+    {
+      "id": 4,
+      "login": "student3",
+      "password": "student123",
+      "fullName": "Иванов Дмитрий Петрович",
+      "role": "student",
+      "email": "student3@example.com",
+      "group": "ИС-31"
+    }
+  ],
+  "teachers": [
+    {
+      "id": 1,
+      "fullName": "Смирнов Алексей Владимирович",
+      "email": "teacher@example.com",
+      "department": "Информационные системы",
+      "subjects": ["Программирование на Python", "Программирование на React + CSS"]
+    },
+    {
+      "id": 2,
+      "fullName": "Иванова Мария Сергеевна",
+      "email": "ivanova@example.com",
+      "department": "Дизайн",
+      "subjects": ["Веб-дизайн"]
+    },
+    {
+      "id": 3,
+      "fullName": "Петров Дмитрий Иванович",
+      "email": "petrov@example.com",
+      "department": "Информационные системы",
+      "subjects": ["Разработка программных модулей"]
+    }
+  ],
+  "students": [
+    {
+      "id": 1,
+      "fullName": "Васильев Тимофей Александрович",
+      "group": "ИС-21",
+      "email": "student1@example.com"
+    },
+    {
+      "id": 2,
+      "fullName": "Петрова Анна Сергеевна",
+      "group": "ИС-22",
+      "email": "student2@example.com"
+    },
+    {
+      "id": 3,
+      "fullName": "Иванов Дмитрий Петрович",
+      "group": "ИС-31",
+      "email": "student3@example.com"
+    },
+    {
+      "id": 4,
+      "fullName": "Сидорова Екатерина Алексеевна",
+      "group": "ИС-32",
+      "email": "student4@example.com"
+    },
+    {
+      "id": 5,
+      "fullName": "Козлов Андрей Николаевич",
+      "group": "ИС-21",
+      "email": "student5@example.com"
+    },
+    {
+      "id": 6,
+      "fullName": "Морозова Ольга Владимировна",
+      "group": "ИС-22",
+      "email": "student6@example.com"
+    }
+  ],
+  "groups": [
+    {
+      "id": "1",
+      "name": "ИС-21",
+      "studentCount": 20,
+      "disciplinesCount": 3,
+      "students": [1, 5],
+      "disciplines": [1, 2, 3]
+    },
+    {
+      "id": "2",
+      "name": "ИС-22",
+      "studentCount": 20,
+      "disciplinesCount": 3,
+      "students": [2, 6],
+      "disciplines": [2, 3, 4]
+    },
+    {
+      "id": "3",
+      "name": "ИС-31",
+      "studentCount": 20,
+      "disciplinesCount": 3,
+      "students": [3],
+      "disciplines": [1, 4, 5]
+    },
+    {
+      "id": "4",
+      "name": "ИС-32",
+      "studentCount": 20,
+      "disciplinesCount": 3,
+      "students": [4],
+      "disciplines": [2, 3, 5]
+    }
+  ],
+  "disciplines": [
+    {
+      "id": 1,
+      "name": "Программирование на Python",
+      "absences": 0,
+      "totalHours": 72,
+      "teacherId": 1,
+      "groupId": "1"
+    },
+    {
+      "id": 2,
+      "name": "Веб-дизайн",
+      "absences": 3,
+      "totalHours": 64,
+      "teacherId": 2,
+      "groupId": "1"
+    },
+    {
+      "id": 3,
+      "name": "Разработка программных модулей",
+      "absences": 0,
+      "totalHours": 80,
+      "teacherId": 3,
+      "groupId": "1"
+    },
+    {
+      "id": 4,
+      "name": "Программирование на React + CSS",
+      "absences": 1,
+      "totalHours": 56,
+      "teacherId": 1,
+      "groupId": "2"
+    }
+  ],
+  "attendance": [
+    {
+      "id": 1,
+      "disciplineId": 1,
+      "studentId": 1,
+      "date": "2026-06-20",
+      "status": "present"
+    },
+    {
+      "id": 2,
+      "disciplineId": 1,
+      "studentId": 1,
+      "date": "2026-06-21",
+      "status": "present"
+    },
+    {
+      "id": 3,
+      "disciplineId": 1,
+      "studentId": 1,
+      "date": "2026-06-22",
+      "status": "absent"
+    },
+    {
+      "id": 4,
+      "disciplineId": 2,
+      "studentId": 1,
+      "date": "2026-06-20",
+      "status": "absent"
+    },
+    {
+      "id": 5,
+      "disciplineId": 2,
+      "studentId": 1,
+      "date": "2026-06-21",
+      "status": "present"
+    },
+    {
+      "id": 6,
+      "disciplineId": 2,
+      "studentId": 1,
+      "date": "2026-06-22",
+      "status": "absent"
+    }
+  ],
+  "gradebook": [
+    {
+      "id": 1,
+      "disciplineId": 1,
+      "studentId": 1,
+      "grade": 5,
+      "semester": "1"
+    },
+    {
+      "id": 2,
+      "disciplineId": 1,
+      "studentId": 1,
+      "grade": 4,
+      "semester": "2"
+    },
+    {
+      "id": 3,
+      "disciplineId": 2,
+      "studentId": 1,
+      "grade": 3,
+      "semester": "1"
+    },
+    {
+      "id": 4,
+      "disciplineId": 2,
+      "studentId": 1,
+      "grade": 4,
+      "semester": "2"
+    }
+  ]
+}

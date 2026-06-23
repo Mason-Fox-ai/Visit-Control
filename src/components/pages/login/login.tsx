@@ -1,122 +1,135 @@
 import React, { useState } from 'react';
-import type { FormEvent } from 'react'; // Используем type-only импорт для FormEvent
+import type { FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './login.module.scss';
-import Button from '../../ui/button/button';
 
-// Интерфейс для пропсов
-interface LoginProps {
-  onLogin?: (email: string, password: string) => void;
-  isLoading?: boolean;
-  error?: string;
+// Интерфейс для пользователя (без пароля)
+interface User {
+  id: number;
+  login: string;
+  fullName: string;
+  role: 'student' | 'teacher';
+  group?: string;
 }
 
-/**
- * Страница входа в систему контроля посещаемости
- */
-const Login: React.FC<LoginProps> = ({ 
-  onLogin, 
-  isLoading = false, 
-  error = '' 
-}) => {
-  // Состояния для полей формы
-  const [email, setEmail] = useState<string>('');
+// Интерфейс для пользователя из БД (с паролем)
+interface UserWithPassword extends User {
+  password: string;
+}
+
+const Login: React.FC = () => {
+  const navigate = useNavigate();
+  const [login, setLogin] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [localError, setLocalError] = useState<string>(error);
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // Функция авторизации
+  const handleLogin = async (login: string, password: string): Promise<User | null> => {
+    try {
+      // Запрос к JSON Server
+      const response = await fetch('http://localhost:3001/users');
+      
+      if (!response.ok) {
+        throw new Error('Ошибка сервера');
+      }
+
+      const users: UserWithPassword[] = await response.json();
+      
+      // Поиск пользователя с совпадающим логином и паролем
+      const user = users.find(
+        (u) => u.login === login && u.password === password
+      );
+
+      // Возвращаем пользователя без пароля
+      if (user) {
+        const { password: _, ...userWithoutPassword } = user;
+        return userWithoutPassword;
+      }
+
+      return null;
+    } catch (error) {
+      console.error('Ошибка авторизации:', error);
+      return null;
+    }
+  };
 
   // Обработчик отправки формы
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLocalError('');
+    setError('');
+    setIsLoading(true);
 
-    // Простая валидация
-    if (!email.trim()) {
-      setLocalError('Введите email');
+    // Валидация
+    if (!login.trim()) {
+      setError('Введите логин');
+      setIsLoading(false);
       return;
     }
 
     if (!password.trim()) {
-      setLocalError('Введите пароль');
+      setError('Введите пароль');
+      setIsLoading(false);
       return;
     }
 
-    // Если передан колбэк, вызываем его
-    if (onLogin) {
-      onLogin(email, password);
-    } else {
-      // Имитация входа
-      console.log('Вход в систему:', { email, password });
-      // Здесь можно добавить логику перенаправления
-      // window.location.href = '/dashboard';
+    try {
+      // Пытаемся авторизоваться
+      const user = await handleLogin(login, password);
+
+      if (user) {
+        // Сохраняем данные пользователя
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('isAuthenticated', 'true');
+        
+        // Перенаправление в зависимости от роли
+        if (user.role === 'teacher') {
+          navigate('/teacher');
+        } else if (user.role === 'student') {
+          navigate('/student');
+        } else {
+          navigate('/');
+        }
+      } else {
+        setError('Неверный логин или пароль');
+      }
+    } catch (error) {
+      setError('Ошибка при входе в систему');
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
-  };
-
-  // Обработчик для кнопки "Почти" (быстрый вход с демо-данными)
-  const handleQuickLogin = () => {
-    setEmail('demo@example.com');
-    setPassword('password123');
-  };
-
-  // Обработчик для кнопки "Продолжи" (продолжить как гость)
-  const handleContinueAsGuest = () => {
-    console.log('Продолжить как гость');
-    // Перенаправление на страницу просмотра без авторизации
-    // window.location.href = '/guest-view';
   };
 
   return (
     <div className={styles.loginPage}>
-      {/* Основной контейнер */}
       <div className={styles.loginContainer}>
-        {/* Логотип или иконка */}
-        <div className={styles.logoSection}>
-          <div className={styles.logoIcon}>
-            <svg 
-              width="48" 
-              height="48" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="2" 
-              strokeLinecap="round" 
-              strokeLinejoin="round"
-            >
-              <path d="M12 2L2 7l10 5 10-5-10-5z" />
-              <path d="M2 17l10 5 10-5" />
-              <path d="M2 12l10 5 10-5" />
-            </svg>
-          </div>
-          <h1 className={styles.title}>Контроль посещаемости студентов</h1>
-        </div>
-
-        {/* Подзаголовок */}
+        <h1 className={styles.title}>Контроль посещаемости студентов</h1>
+        
         <p className={styles.subtitle}>
           Войдите в систему для отметки или просмотр таблиц
         </p>
 
-        {/* Форма входа */}
         <form onSubmit={handleSubmit} className={styles.loginForm}>
-          {/* Поле email */}
           <div className={styles.formGroup}>
-            <label htmlFor="email" className={styles.label}>
-              Email
+            <label htmlFor="login" className={styles.label}>
+              Логин
             </label>
             <div className={styles.inputWrapper}>
               <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Введите ваш email"
+                id="login"
+                type="text"
+                value={login}
+                onChange={(e) => setLogin(e.target.value)}
+                placeholder="Введите ваш логин"
                 className={styles.input}
+                autoComplete="username"
                 disabled={isLoading}
-                autoComplete="email"
-                required
               />
             </div>
           </div>
 
-          {/* Поле пароля */}
           <div className={styles.formGroup}>
             <label htmlFor="password" className={styles.label}>
               Пароль
@@ -129,15 +142,15 @@ const Login: React.FC<LoginProps> = ({
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Введите ваш пароль"
                 className={styles.input}
-                disabled={isLoading}
                 autoComplete="current-password"
-                required
+                disabled={isLoading}
               />
               <button
                 type="button"
                 className={styles.passwordToggle}
                 onClick={() => setShowPassword(!showPassword)}
                 aria-label={showPassword ? 'Скрыть пароль' : 'Показать пароль'}
+                disabled={isLoading}
               >
                 {showPassword ? (
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -155,59 +168,33 @@ const Login: React.FC<LoginProps> = ({
             </div>
           </div>
 
-          {/* Ошибка */}
-          {localError && (
+          {error && (
             <div className={styles.errorMessage}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="12" cy="12" r="10" />
                 <line x1="12" y1="8" x2="12" y2="12" />
                 <line x1="12" y1="16" x2="12.01" y2="16" />
               </svg>
-              {localError}
+              {error}
             </div>
           )}
 
-          {/* Кнопки действий */}
-          <div className={styles.actions}>
-            <Button
-              type="button"
-              variant="outline"
-              size="medium"
-              onClick={handleQuickLogin}
-              disabled={isLoading}
-            >
-              Почти
-            </Button>
-
-            <Button
-              type="button"
-              variant="primary"
-              size="medium"
-              onClick={handleContinueAsGuest}
-              disabled={isLoading}
-            >
-              Продолжи
-            </Button>
-          </div>
-
-          {/* Кнопка входа */}
-          <Button
-            type="submit"
-            variant="primary"
-            size="large"
-            fullWidth
-            disabled={isLoading}
+          <button 
+            type="submit" 
             className={styles.submitButton}
+            disabled={isLoading}
           >
             {isLoading ? 'Вход...' : 'Войти'}
-          </Button>
+          </button>
         </form>
 
-        {/* Дополнительная информация */}
-        <div className={styles.footer}>
-          <p className={styles.footerText}>
-            Демо-доступ: demo@example.com / password123
-          </p>
+        {/* Подсказка для тестирования */}
+        <div className={styles.demoHint}>
+          <p>Демо-доступ:</p>
+          <div className={styles.demoAccounts}>
+            <span>Преподаватель: teacher / teacher123</span>
+            <span>Студент: student / student123</span>
+          </div>
         </div>
       </div>
     </div>
