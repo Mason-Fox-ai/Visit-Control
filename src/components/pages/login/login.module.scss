@@ -1,3 +1,6 @@
+// Импортируем модуль color
+@use "sass:color";
+
 // Переменные для цветовой схемы
 $color-primary: #667eea;
 $color-primary-hover: #5a67d8;
@@ -155,7 +158,7 @@ $color-input-bg: #ffffff;
   }
 }
 
-// Обертка для инпута (для иконки/кнопки внутри)
+// Обертка для инпута
 .inputWrapper {
   position: relative;
   display: flex;
@@ -170,8 +173,9 @@ $color-input-bg: #ffffff;
     box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
   }
 
+  // Используем color.scale вместо darken
   &:hover:not(:focus-within) {
-    border-color: darken($color-border, 10%);
+    border-color: color.scale($color-border, $lightness: -10%);
   }
 }
 
@@ -198,7 +202,6 @@ $color-input-bg: #ffffff;
     cursor: not-allowed;
   }
 
-  // Стили для автозаполнения
   &:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 1000px white inset !important;
     -webkit-text-fill-color: $color-text-primary !important;
@@ -270,7 +273,7 @@ $color-input-bg: #ffffff;
   }
 }
 
-// Блок с кнопками "Почти" и "Продолжи"
+// Блок с кнопками
 .actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -287,11 +290,10 @@ $color-input-bg: #ffffff;
   }
 }
 
-// Кнопка "Войти" (полная ширина)
+// Кнопка "Войти"
 .submitButton {
   margin-top: 4px;
 
-  // Анимация пульсации для привлечения внимания
   &:not(:disabled) {
     animation: pulse 2s infinite;
   }
@@ -332,33 +334,7 @@ $color-input-bg: #ffffff;
   }
 }
 
-// Стили для состояния загрузки
-.loadingOverlay {
-  position: relative;
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(2px);
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-  }
-}
-
-// Адаптивность для планшетов
-@media (min-width: 769px) and (max-width: 1024px) {
-  .loginContainer {
-    max-width: 380px;
-    padding: 32px 28px;
-  }
-}
-
-// Адаптивность для мобильных телефонов
+// Адаптивность
 @media (max-width: 480px) {
   .loginPage {
     padding: 12px;
@@ -380,48 +356,9 @@ $color-input-bg: #ffffff;
       height: 28px;
     }
   }
-
-  .title {
-    font-size: 20px;
-  }
-
-  .subtitle {
-    font-size: 14px;
-    margin-bottom: 24px;
-  }
-
-  .input {
-    font-size: 14px;
-    padding: 10px 12px;
-    min-height: 44px;
-  }
-
-  .passwordToggle {
-    padding: 0 12px;
-    min-height: 44px;
-  }
 }
 
-// Для очень маленьких экранов
-@media (max-width: 360px) {
-  .loginContainer {
-    padding: 20px 12px;
-  }
-
-  .title {
-    font-size: 18px;
-  }
-}
-
-// Премиум-эффекты (для браузеров с поддержкой)
-@supports (backdrop-filter: blur(10px)) {
-  .loginContainer {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(20px);
-  }
-}
-
-// Для пользователей, предпочитающих темную тему (опционально)
+// Темная тема
 @media (prefers-color-scheme: dark) {
   .loginPage {
     background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);

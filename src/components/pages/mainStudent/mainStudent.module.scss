@@ -1,3 +1,6 @@
+// Импортируем модуль color
+@use "sass:color";
+
 // Переменные
 $color-primary: #667eea;
 $color-primary-hover: #5a67d8;
@@ -591,7 +594,12 @@ $transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .header {
-    background: linear-gradient(135px, darken($color-primary, 10%), darken($color-secondary, 10%));
+    // Используем color.scale вместо darken
+    background: linear-gradient(
+      135deg, 
+      color.scale($color-primary, $lightness: -10%), 
+      color.scale($color-secondary, $lightness: -10%)
+    );
   }
 
   .disciplineCard {

@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import type { ReactNode } from 'react';
-import { Login } from '../components/pages/login/login.tsx';
+import  Login  from '../components/pages/login/login.tsx';
 import { MainStudent } from '../components/pages/mainStudent/mainStudent.tsx';
 import  MainTeacher  from '../components/pages/mainTeacher/mainTeacher.tsx';
 import { getUserRole, isAuthenticated, type UserRole } from '../utils/auth.ts';
