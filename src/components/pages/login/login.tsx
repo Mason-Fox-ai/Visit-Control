@@ -1,67 +1,27 @@
+// src/components/pages/login/login.tsx
+
 import React, { useState } from 'react';
 import type { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './login.module.scss';
 
-// Интерфейс для пользователя (без пароля)
-interface User {
-  id: number;
-  login: string;
-  fullName: string;
-  role: 'student' | 'teacher';
-  group?: string;
-}
-
-// Интерфейс для пользователя из БД (с паролем)
-interface UserWithPassword extends User {
-  password: string;
-}
+// ✅ ВСЕ ИМПОРТЫ ДОЛЖНЫ БЫТЬ!
+import { authenticateUser, generateToken } from '../../../services/authService';
+import { setAuth } from '../../../utils/auth';
 
 const Login: React.FC = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate();  // ← ОБЯЗАТЕЛЬНО!
   const [login, setLogin] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // Функция авторизации
-  const handleLogin = async (login: string, password: string): Promise<User | null> => {
-    try {
-      // Запрос к JSON Server
-      const response = await fetch('http://localhost:3001/users');
-      
-      if (!response.ok) {
-        throw new Error('Ошибка сервера');
-      }
-
-      const users: UserWithPassword[] = await response.json();
-      
-      // Поиск пользователя с совпадающим логином и паролем
-      const user = users.find(
-        (u) => u.login === login && u.password === password
-      );
-
-      // Возвращаем пользователя без пароля
-      if (user) {
-        const { password: _, ...userWithoutPassword } = user;
-        return userWithoutPassword;
-      }
-
-      return null;
-    } catch (error) {
-      console.error('Ошибка авторизации:', error);
-      return null;
-    }
-  };
-
-  // Обработчик отправки формы
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
-    // Валидация
     if (!login.trim()) {
       setError('Введите логин');
       setIsLoading(false);
@@ -75,15 +35,11 @@ const Login: React.FC = () => {
     }
 
     try {
-      // Пытаемся авторизоваться
-      const user = await handleLogin(login, password);
+      const user = await authenticateUser(login, password);
 
       if (user) {
-        // Сохраняем данные пользователя
-        localStorage.setItem('user', JSON.stringify(user));
-        localStorage.setItem('isAuthenticated', 'true');
+        setAuth(user, generateToken());
         
-        // Перенаправление в зависимости от роли
         if (user.role === 'teacher') {
           navigate('/teacher');
         } else if (user.role === 'student') {
@@ -188,7 +144,6 @@ const Login: React.FC = () => {
           </button>
         </form>
 
-        {/* Подсказка для тестирования */}
         <div className={styles.demoHint}>
           <p>Демо-доступ:</p>
           <div className={styles.demoAccounts}>
@@ -201,4 +156,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Login;  // ← ОБЯЗАТЕЛЬНО!

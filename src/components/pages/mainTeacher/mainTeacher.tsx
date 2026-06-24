@@ -1,130 +1,93 @@
-import React, { useEffect } from 'react';
-import './mainTeacher.module.scss';
+// src/components/pages/mainTeacher/mainTeacher.tsx
 
-// Определяем интерфейсы для данных
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getUser, logout } from '../../../utils/auth';
+import styles from './mainTeacher.module.scss';
+
 interface Group {
-  id: string;
+  id: number;
   name: string;
-  studentCount: number;
-  disciplinesCount: number;
+  students: number;
+  disciplines: number;
 }
 
-// Основной компонент страницы преподавателя
 const MainTeacher: React.FC = () => {
-  // Данные групп (без состояния, так как они статичные)
+  const navigate = useNavigate();
+  const user = getUser();
+
+  // Временные данные для групп
+  // ПОЗЖЕ: замените на реальные данные из API
   const groups: Group[] = [
-    {
-      id: '1',
-      name: 'ИС21',
-      studentCount: 20,
-      disciplinesCount: 3,
-    },
-    {
-      id: '2',
-      name: 'ИС22',
-      studentCount: 20,
-      disciplinesCount: 3,
-    },
-    {
-      id: '3',
-      name: 'ИС31',
-      studentCount: 20,
-      disciplinesCount: 3,
-    },
-    {
-      id: '4',
-      name: 'ИС32',
-      studentCount: 20,
-      disciplinesCount: 3,
-    },
+    { id: 1, name: 'ИС21', students: 20, disciplines: 3 },
+    { id: 2, name: 'ИС22', students: 20, disciplines: 3 },
+    { id: 3, name: 'ИС31', students: 20, disciplines: 3 },
+    { id: 4, name: 'ИС32', students: 20, disciplines: 3 },
   ];
 
-  // Данные преподавателя (без состояния)
-  const teacher = {
-    fullName: 'Смирнов Алексей Владимирович',
-    role: 'Преподаватель',
-  };
-
-  // Эффект для загрузки данных (можно заменить на API запрос)
-  useEffect(() => {
-    // Здесь можно добавить загрузку данных с сервера
-    console.log('Компонент MainTeacher загружен');
-  }, []);
-
-  // Обработчик выхода из системы
   const handleLogout = () => {
-    // Очищаем токен авторизации, перенаправляем на страницу входа
-    localStorage.removeItem('authToken');
-    window.location.href = '/login';
-    console.log('Выход из системы');
+    logout();
+    navigate('/login');
   };
 
-  // Обработчик открытия табеля группы
-  const handleOpenGradebook = (groupId: string) => {
-    // Переход на страницу табеля успеваемости группы
-    console.log(`Открытие табеля для группы ${groupId}`);
-    // Пример навигации:
-    // history.push(`/gradebook/${groupId}`);
-    // или window.location.href = `/gradebook/${groupId}`;
+  const handleOpenGroup = (groupId: number) => {
+    // ПОЗЖЕ: переход на страницу группы
+    console.log('Открыть группу:', groupId);
+    // navigate(`/group/${groupId}`);
   };
 
   return (
-    <div className="main-teacher-container">
-      {/* Шапка с информацией о пользователе */}
-      <header className="teacher-header">
-        <div className="header-title">
-          <h1>Посещаемость студентов</h1>
-          <span className="subtitle">Мои группы</span>
-        </div>
-        <div className="user-info">
-          <div className="teacher-details">
-            <span className="teacher-name">{teacher.fullName}</span>
-            <span className="teacher-role">{teacher.role}</span>
+    <div className={styles.page}>
+      {/* ШАПКА */}
+      <header className={styles.header}>
+        <div className={styles.headerContent}>
+          <div className={styles.headerLeft}>
+            <h1 className={styles.title}>Посещаемость студентов</h1>
+            <span className={styles.subtitle}>Мои группы</span>
           </div>
-          <button 
-            className="logout-button"
-            onClick={handleLogout}
-            aria-label="Выйти из системы"
-          >
-            [Выйти]
-          </button>
+          
+          <div className={styles.headerRight}>
+            <div className={styles.userInfo}>
+              <span className={styles.userName}>{user?.fullName || 'Преподаватель'}</span>
+              <span className={styles.userRole}>Преподаватель</span>
+            </div>
+            <button onClick={handleLogout} className={styles.logoutButton}>
+              Выйти
+            </button>
+          </div>
         </div>
       </header>
 
-      {/* Список групп */}
-      <main className="groups-container">
-        {groups.map((group) => (
-          <div key={group.id} className="group-card">
-            <div className="group-header">
-              <h2 className="group-name">{group.name}</h2>
-            </div>
-            <div className="group-stats">
-              <div className="stat-item">
-                <span className="stat-label">Студентов:</span>
-                <span className="stat-value">{group.studentCount}</span>
+      {/* ОСНОВНОЙ КОНТЕНТ - СЕТКА ГРУПП */}
+      <main className={styles.main}>
+        <div className={styles.groupsGrid}>
+          {groups.map((group) => (
+            <div key={group.id} className={styles.groupCard}>
+              <h2 className={styles.groupName}>{group.name}</h2>
+              
+              <div className={styles.groupStats}>
+                <div className={styles.statItem}>
+                  <span className={styles.statValue}>{group.students}</span>
+                  <span className={styles.statLabel}>Студентов</span>
+                </div>
+                <div className={styles.statItem}>
+                  <span className={styles.statValue}>{group.disciplines}</span>
+                  <span className={styles.statLabel}>Дисциплин</span>
+                </div>
               </div>
-              <div className="stat-item">
-                <span className="stat-label">Дисциплин:</span>
-                <span className="stat-value">{group.disciplinesCount}</span>
-              </div>
+              
+              <button 
+                onClick={() => handleOpenGroup(group.id)}
+                className={styles.openButton}
+              >
+                Открыть табель →
+              </button>
             </div>
-            <button
-              className="open-gradebook-button"
-              onClick={() => handleOpenGradebook(group.id)}
-              aria-label={`Открыть табель для группы ${group.name}`}
-            >
-              [Открыть табель →]
-            </button>
-          </div>
-        ))}
+          ))}
+        </div>
       </main>
-
-      {/* Подвал (опционально) */}
-      <footer className="teacher-footer">
-        <p>© {new Date().getFullYear()} Система учета посещаемости</p>
-      </footer>
     </div>
   );
 };
 
-export default MainTeacher; // Экспорт по умолчанию
+export default MainTeacher;

@@ -1,12 +1,14 @@
-import { BrowserRouter } from  "react-router-dom";
-import { Router } from '../router/router.tsx'
+// src/app/app.tsx
 
-export const App = () => {
-    return (
-        <BrowserRouter>
-            <Router />
-        </BrowserRouter>
-    );
+import { BrowserRouter } from 'react-router-dom';
+import AppRouter from '../router/router';  // ← Добавьте "../"
+
+const App = () => {
+  return (
+    <BrowserRouter>
+      <AppRouter />
+    </BrowserRouter>
+  );
 };
 
 export default App;

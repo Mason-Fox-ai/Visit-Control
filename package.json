@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently -n vite,api -c blue,green \"vite\" \"json-server --watch db.json --port 4000\"",
+    "api": "json-server --watch db.json --port 4000",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -14,9 +15,12 @@
     "react-router-dom": "^6.14.2"
   },
   "devDependencies": {
+    "@types/node": "^26.0.0",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.3",
+    "concurrently": "^10.0.3",
+    "json-server": "^0.17.4",
     "sass": "^1.63.6",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
