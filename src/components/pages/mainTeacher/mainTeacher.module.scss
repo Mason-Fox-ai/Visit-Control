@@ -6,7 +6,8 @@
 
 .page {
   min-height: 100vh;
-  background: #f0f2f5;
+  background: linear-gradient(145deg, #fbb46e 0%, #666666 96%);
+  background: linear-gradient(145deg, #fafafa 0%, #f4a460 100%);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
@@ -79,10 +80,10 @@
 
 .logoutButton {
   background: none;
-  border: 1px solid #ff4d4f;
-  color: #ff4d4f;
+  border: 5px solid #ff7f00;
+  color: #ff7f00;
   padding: 6px 16px;
-  border-radius: 6px;
+  border-radius: 20px;
   font-size: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -90,7 +91,7 @@
 }
 
 .logoutButton:hover {
-  background: #ff4d4f;
+  background: #ff7f00;
   color: #ffffff;
 }
 
@@ -119,12 +120,12 @@
 // ============================================
 
 .groupCard {
-  background: #ffffff;
+  background: #eeeeee;
   border-radius: 12px;
   padding: 24px 20px 20px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: all 0.25s ease;
-  border: 1px solid #f0f0f0;
+  border: 1px solid #888888;
   display: flex;
   flex-direction: column;
 }

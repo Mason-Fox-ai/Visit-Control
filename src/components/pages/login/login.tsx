@@ -5,23 +5,25 @@ import type { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './login.module.scss';
 
-// ✅ ВСЕ ИМПОРТЫ ДОЛЖНЫ БЫТЬ!
+// ✅ ИМПОРТЫ ДЛЯ АВТОРИЗАЦИИ (из наших сервисов)
 import { authenticateUser, generateToken } from '../../../services/authService';
 import { setAuth } from '../../../utils/auth';
 
 const Login: React.FC = () => {
-  const navigate = useNavigate();  // ← ОБЯЗАТЕЛЬНО!
+  const navigate = useNavigate();
   const [login, setLogin] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // Обработчик отправки формы
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
+    // Валидация
     if (!login.trim()) {
       setError('Введите логин');
       setIsLoading(false);
@@ -35,11 +37,14 @@ const Login: React.FC = () => {
     }
 
     try {
+      // ✅ Используем authenticateUser из сервиса
       const user = await authenticateUser(login, password);
 
       if (user) {
+        // ✅ Сохраняем сессию через setAuth
         setAuth(user, generateToken());
         
+        // 🎯 ПЕРЕХОД НА НУЖНУЮ СТРАНИЦУ
         if (user.role === 'teacher') {
           navigate('/teacher');
         } else if (user.role === 'student') {
@@ -156,4 +161,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;  // ← ОБЯЗАТЕЛЬНО!
+export default Login;
