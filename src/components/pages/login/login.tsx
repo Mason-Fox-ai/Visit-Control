@@ -150,11 +150,7 @@ const Login: React.FC = () => {
         </form>
 
         <div className={styles.demoHint}>
-          <p>Демо-доступ:</p>
-          <div className={styles.demoAccounts}>
-            <span>Преподаватель: teacher / teacher123</span>
-            <span>Студент: student / student123</span>
-          </div>
+         
         </div>
       </div>
     </div>
