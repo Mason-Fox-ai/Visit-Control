@@ -30,10 +30,9 @@ const MainTeacher: React.FC = () => {
     navigate('/login');
   };
 
+  // ✅ ОБНОВЛЕНО: переход на страницу табеля группы
   const handleOpenGroup = (groupId: number) => {
-    // ПОЗЖЕ: переход на страницу группы
-    console.log('Открыть группу:', groupId);
-    // navigate(`/group/${groupId}`);
+    navigate(`/group/${groupId}`);
   };
 
   return (

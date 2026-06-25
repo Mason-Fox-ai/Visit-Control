@@ -5,6 +5,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from '../components/pages/login/login';
 import MainTeacher from '../components/pages/mainTeacher/mainTeacher';
 import MainStudent from '../components/pages/mainStudent/mainStudent';
+import GroupAttendance from '../components/pages/is21/is21'; // ← НОВЫЙ ИМПОРТ
 import { isAuthenticated, getUserRole, type UserRole } from '../utils/auth';
 
 interface ProtectedRouteProps {
@@ -40,6 +41,16 @@ const AppRouter: React.FC = () => {
         } 
       />
       
+      {/* ✅ НОВЫЙ МАРШРУТ: страница табеля группы (только для преподавателя) */}
+      <Route 
+        path="/group/:groupId" 
+        element={
+          <ProtectedRoute role="teacher">
+            <GroupAttendance />
+          </ProtectedRoute>
+        } 
+      />
+      
       <Route 
         path="/student" 
         element={
@@ -54,4 +65,4 @@ const AppRouter: React.FC = () => {
   );
 };
 
-export default AppRouter;  // ← ОБЯЗАТЕЛЬНО!
+export default AppRouter;
