@@ -5,7 +5,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from '../components/pages/login/login';
 import MainTeacher from '../components/pages/mainTeacher/mainTeacher';
 import MainStudent from '../components/pages/mainStudent/mainStudent';
-import GroupAttendance from '../components/pages/is21/is21'; // ← НОВЫЙ ИМПОРТ
+import GroupAttendance from '../components/pages/groupAttendance/groupAttendance'; // ← НОВЫЙ ИМПОРТ
 import { isAuthenticated, getUserRole, type UserRole } from '../utils/auth';
 
 interface ProtectedRouteProps {

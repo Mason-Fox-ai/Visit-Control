@@ -1,0 +1,505 @@
+// src/components/pages/groupAttendance/groupAttendance.module.scss
+
+// ============================================
+// 1. ОБЩИЕ НАСТРОЙКИ
+// ============================================
+
+.page {
+  min-height: 100vh;
+  background: linear-gradient(145deg, #fbb46e 0%, #666666 96%);
+  background: linear-gradient(145deg, #fafafa 0%, #f4a460 100%);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+// ============================================
+// 2. ШАПКА
+// ============================================
+
+.header {
+  background: #ffffff;
+  border-bottom: 1px solid #e8e8e8;
+  padding: 16px 32px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.headerContent {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: #8c8c8c;
+  font-weight: 400;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.userName {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.userRole {
+  font-size: 13px;
+  color: #8c8c8c;
+}
+
+.logoutButton {
+  background: none;
+  border: 5px solid #ff7f00;
+  color: #ff7f00;
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.logoutButton:hover {
+  background: #ff7f00;
+  color: #ffffff;
+}
+
+// ============================================
+// 3. ОСНОВНОЙ КОНТЕНТ
+// ============================================
+
+.main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 32px;
+}
+
+// ============================================
+// 4. НАВИГАЦИЯ НАЗАД
+// ============================================
+
+.navigation {
+  margin-bottom: 20px;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  color: #ff7f00;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 8px 0;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.backButton:hover {
+  color: #ff7f00;
+  transform: translateX(-4px);
+}
+
+// ============================================
+// 5. ФИЛЬТРЫ
+// ============================================
+
+.filters {
+  background: #eeeeee;
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 3px solid #000000;
+}
+
+.filterGroup {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.filterButton {
+  padding: 6px 20px;
+  border: 1px solid #d9d9d9;
+  background: #ffffff;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  color: #595959;
+}
+
+.filterButton:hover {
+  border-color: #ff7f00;
+  color: #ff7f00;
+}
+
+.filterButton.active {
+  background: #ff7f00;
+  color: #ffffff;
+  border-color: #ff7f00;
+}
+
+.filterControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-end;
+}
+
+.filterItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.filterLabel {
+  font-size: 13px;
+  color: #8c8c8c;
+  font-weight: 500;
+}
+
+.dateInput,
+.selectInput {
+  padding: 6px 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  font-size: 14px;
+  background: #ffffff;
+  min-width: 160px;
+}
+
+.dateInput:focus,
+.selectInput:focus {
+  outline: none;
+  border-color: #ff7f00;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.downloadButton {
+  padding: 8px 20px;
+  background: #ffffff;
+  color: #000000;
+  border: 5px solid #000000;
+  border-radius: 50px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.downloadButton:hover {
+  background: #000000;
+  color: #ffffff;
+}
+
+// ============================================
+// 6. ТАБЛИЦА
+// ============================================
+
+.tableWrapper {
+  background: #eeeeee;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 3px solid #000000;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+
+  thead {
+    background: #000000;
+  }
+
+  th {
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    color: #ffffff;
+    border-bottom: 1px solid #e8e8e8;
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 10px 16px;
+    border-bottom: 3px solid #000000;
+    vertical-align: middle;
+  }
+
+  tbody tr:hover {
+    background: #fafafa;
+  }
+}
+
+.colNumber {
+  width: 60px;
+  text-align: center;
+  color: #8c8c8c;
+}
+
+.colName {
+  min-width: 180px;
+  font-weight: 500;
+}
+
+.colMark {
+  min-width: 200px;
+}
+
+.colReason {
+  min-width: 180px;
+}
+
+// ============================================
+// 7. КНОПКИ ОТМЕТОК
+// ============================================
+
+.markButtons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.markBtn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #d9d9d9;
+  background: #ffffff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #595959;
+}
+
+.markBtn:hover {
+  border-color: #ff7f00;
+  color: #ff7f00;
+  background: #f0f7ff;
+}
+
+.markBtn.markP {
+  background: #52c41a;
+  color: #ffffff;
+  border-color: #52c41a;
+}
+
+.markBtn.markN {
+  background: #ff4d4f;
+  color: #ffffff;
+  border-color: #ff4d4f;
+}
+
+.markBtn.markB {
+  background: #faad14;
+  color: #ffffff;
+  border-color: #faad14;
+}
+
+.markLabel {
+  font-size: 13px;
+  color: #8c8c8c;
+  margin-left: 4px;
+  min-width: 100px;
+}
+
+// ============================================
+// 8. ПОЛЕ ПРИЧИНЫ
+// ============================================
+
+.reasonInput {
+  width: 100%;
+  padding: 4px 8px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 14px;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.reasonInput:focus {
+  outline: none;
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.reasonInput::placeholder {
+  color: #bfbfbf;
+}
+
+// ============================================
+// 9. ДЕЙСТВИЯ ВНИЗУ
+// ============================================
+
+.actions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.pollButton {
+  padding: 10px 32px;
+  background: #b3c3e2;
+  color: #000000;
+  border: 5px solid #000000;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pollButton:hover {
+  background: #b3c3e2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(250, 173, 20, 0.4);
+}
+
+// ============================================
+// 10. АДАПТИВНОСТЬ
+// ============================================
+
+@media (max-width: 1024px) {
+  .filterControls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .downloadButton {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 12px 16px;
+  }
+
+  .headerContent {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .headerRight {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .main {
+    padding: 16px;
+  }
+
+  .filters {
+    padding: 16px;
+  }
+
+  .filterGroup {
+    flex-wrap: wrap;
+  }
+
+  .table {
+    font-size: 13px;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px 12px;
+  }
+
+  .colNumber {
+    width: 40px;
+  }
+
+  .markBtn {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+
+  .markLabel {
+    min-width: 60px;
+    font-size: 12px;
+  }
+
+  .pollButton {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerRight {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .logoutButton {
+    width: 100%;
+    text-align: center;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .filterControls {
+    gap: 12px;
+  }
+
+  .table {
+    font-size: 12px;
+  }
+
+  .table th,
+  .table td {
+    padding: 6px 8px;
+  }
+
+  .colName {
+    min-width: 120px;
+  }
+
+  .markButtons {
+    flex-wrap: wrap;
+  }
+}
